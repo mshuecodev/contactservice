@@ -9,6 +9,7 @@ const contactSchema = new Schema(
 		email: String,
 		address: String,
 		dateofbirth: Date,
+		age: String,
 		gender: String,
 		company: String,
 		facebook: String,
@@ -17,7 +18,8 @@ const contactSchema = new Schema(
 		linkedin: String,
 		img: ["String"],
 		notes: String,
-		tags: Array
+		tags: Array,
+		works: Array
 	},
 	{
 		timestamps: true

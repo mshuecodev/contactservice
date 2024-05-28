@@ -1,49 +1,51 @@
 const contactModel = require("../models/contacts")
 
-exports.get = function (req, res, next) {
-	contactModel
-		.find()
-		.then((data) => {
-			res.json(data)
-		})
-		.catch((err) => {
-			next(err)
-		})
+exports.get = async function (req, res, next) {
+	try {
+		const result = await contactModel.find({})
+		res.json(result)
+	} catch (error) {
+		next(error)
+	}
 }
 
-exports.create = function (req, res, next) {
+exports.getDetail = async function (req, res, next) {
+	let { _id } = req.params
+	try {
+		const result = await contactModel.findById(_id)
+		res.json(result)
+	} catch (error) {
+		next(error)
+	}
+}
+
+exports.create = async function (req, res, next) {
 	var new_data = new contactModel(req.body)
 
-	new_data.save(function (err, result) {
-		if (err) {
-			next(err)
-		} else {
-			res.json(result)
-		}
-	})
+	try {
+		let result = await new_data.save()
+		res.json(result)
+	} catch (error) {
+		next(error)
+	}
 }
 
-exports.update = function (req, res, next) {
-	contactModel.findOneAndUpdate({ _id: req.params._id }, req.body, { new: true }, function (err, result) {
-		if (err) {
-			next(err)
-		} else {
-			res.json(result)
-		}
-	})
+exports.update = async function (req, res, next) {
+	try {
+		let result = await contactModel.findOneAndUpdate({ _id: req.params._id }, req.body, { new: true })
+		res.json(result)
+	} catch (error) {
+		next(error)
+	}
 }
 
-exports.delete = function (req, res, next) {
-	contactModel.remove(
-		{
+exports.delete = async function (req, res, next) {
+	try {
+		let result = await contactModel.findByIdAndDelete({
 			_id: req.params._id
-		},
-		function (err, result) {
-			if (err) {
-				next(err)
-			} else {
-				res.json({ message: "successfully deleted", result: result })
-			}
-		}
-	)
+		})
+		res.json({ message: "successfully deleted", result: result })
+	} catch (error) {
+		next(error)
+	}
 }
